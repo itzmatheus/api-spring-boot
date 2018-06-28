@@ -7,17 +7,18 @@ import org.springframework.stereotype.Service;
 
 import com.matheusjlfm.cursomc.domain.Categoria;
 import com.matheusjlfm.cursomc.repositories.CategoriaRepository;
+import com.matheusjlfm.cursomc.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {
 
-	//Essa dependencia vai ser automaticamente instanciada pelo Spring.
 	@Autowired
 	private CategoriaRepository repo;
 	
 	public Categoria find(Integer id) {
 		Optional<Categoria> obj = repo.findById(id);
-		return obj.orElse(null);
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 	}
 	
 }
